@@ -1,21 +1,256 @@
-<h1>Hoş Geldin Sevgilim ❤️</h1>
 
-<p>
-Belki şu an aramızda kilometreler var.
-Ama sana ait bir dünya oluşturmak istedim.
-<br><br>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esra'ya, Ali'den ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;600;700&display=swap');
 
-Burası benim kalbimin sana açılan kapısı.
-<br><br>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;background:#171329;color:#fff1f7;
+ font-family:'Nunito',sans-serif;overflow-x:hidden;
+}
+.stars{
+ position:fixed;inset:0;pointer-events:none;z-index:0;
+ background-image:
+ radial-gradient(1px 1px at 20% 30%,#fff 99%,transparent),
+ radial-gradient(2px 2px at 70% 20%,#f8b9e0 99%,transparent),
+ radial-gradient(1px 1px at 40% 80%,#fff 99%,transparent),
+ radial-gradient(2px 2px at 90% 70%,#fff 99%,transparent);
+ background-size:190px 190px;
+ animation:twinkle 5s infinite alternate;
+}
+@keyframes twinkle{to{opacity:.35}}
+section{position:relative;z-index:1;padding:75px 20px;text-align:center}
+.hero{
+ min-height:100vh;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;
+ background:radial-gradient(ellipse at center,#493052 0%,#21182f 50%,#171329 100%);
+}
+h1,h2,.serif{font-family:'Cormorant Garamond',serif}
+h1{font-size:clamp(48px,10vw,85px);font-weight:400;margin:15px 0;color:#ffd5e9}
+h2{font-size:38px;color:#ffd5e9;font-weight:400}
+p{line-height:1.9;color:#e7d5e4}
+.subtitle{font-size:16px;letter-spacing:2px;color:#e8b7d5}
+button{
+ border:1px solid #e9a9d0;background:#a65c91;color:white;
+ border-radius:30px;padding:14px 25px;font-size:15px;
+ cursor:pointer;font-family:inherit;transition:.3s;
+}
+button:hover{background:#c17eac;transform:translateY(-3px)}
+.outline{background:transparent}
+.container{max-width:750px;margin:auto}
+.card{
+ background:rgba(255,255,255,.06);border:1px solid rgba(255,194,225,.2);
+ border-radius:20px;padding:25px;margin:15px 0;
+ backdrop-filter:blur(8px);
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card h3{color:#ffcce5;font-family:'Cormorant Garamond',serif;font-size:25px}
+.heart{font-size:55px;animation:beat 1.5s infinite}
+@keyframes beat{50%{transform:scale(1.16)}}
+.hidden{display:none}
+footer{position:relative;z-index:1;text-align:center;padding:40px;color:#d8a9c8}
+.small{font-size:12px;color:#c9aec4}
+.modal{
+ display:none;position:fixed;inset:0;z-index:10;
+ background:rgba(8,5,18,.88);padding:20px;
+ justify-content:center;align-items:center;
+}
+.modal-content{
+ background:#30213d;border:1px solid #d99ac3;
+ border-radius:22px;padding:30px;max-width:450px;
+ width:100%;text-align:center;
+}
+#reason{font-family:'Cormorant Garamond',serif;font-size:27px;color:#ffd5e9}
+</style>
+</head>
+<body>
+<div class="stars"></div>
 
-Her yıldızda bir dileğim, her mektupta bir parçam,
-her köşesinde sana ait bir sevgim var.
-<br><br>
+<section class="hero">
+ <div class="heart">♡</div>
+ <div class="subtitle">ALİ'DEN ESRA'YA</div>
+ <h1>Hoş geldin Esra...</h1>
+ <p>Senin için küçük bir dünya hazırladım.<br>
+ Bu dünyada her şey sana ait.</p>
+ <button onclick="document.getElementById('story').scrollIntoView()">Dünyama Gir ♡</button>
+ <p class="small">Sadece senin için hazırlandı.</p>
+</section>
 
-İyi ki varsın.
-<br><br>
+<section id="story">
+ <div class="container">
+  <div class="subtitle">BİR KÜÇÜK İTİRAF</div>
+  <h2>Mesafeler var, ama...</h2>
+  <div class="card">
+   <p class="serif" style="font-size:24px">
+    Bazen keşke yanımda olsan diyorum.
+    Sana sarılabilsem, gözlerinin içine bakabilsem
+    ve hiçbir şey söylemeden yanında durabilsem...
+   </p>
+   <p>Belki şu an sana dokunamıyorum ama
+   kalbimdeki yerini hiçbir mesafe değiştiremiyor.</p>
+   <p>İyi ki varsın Esra.</p>
+   <p>— Ali ❤️</p>
+  </div>
+ </div>
+</section>
 
-<span style="color:#ffd5e9;font-size:20px">
-— Ali ❤️
-</span>
-</p>
+<section>
+ <div class="container">
+  <div class="subtitle">KÜÇÜK SÜRPRİZLER</div>
+  <h2>Sana özel odalar</h2>
+  <div class="grid">
+   <div class="card">
+    <div style="font-size:35px">💌</div>
+    <h3>Beni Özlediğinde Aç</h3>
+    <p>Sana söylemek istediğim birkaç şey var.</p>
+    <button class="outline" onclick="openLetter(0)">Mektubu aç</button>
+   </div>
+   <div class="card">
+    <div style="font-size:35px">🌙</div>
+    <h3>Üzgün Olduğunda Aç</h3>
+    <p>Umarım yüzünde küçük bir gülümseme oluştururum.</p>
+    <button class="outline" onclick="openLetter(1)">Mektubu aç</button>
+   </div>
+   <div class="card">
+    <div style="font-size:35px">❤️</div>
+    <h3>Sevilmediğini Düşündüğünde Aç</h3>
+    <p>Sana hatırlatmam gereken bir şey var.</p>
+    <button class="outline" onclick="openLetter(2)">Mektubu aç</button>
+   </div>
+   <div class="card">
+    <div style="font-size:35px">✨</div>
+    <h3>Uyumadan Önce Aç</h3>
+    <p>Günün son mesajı benden olsun.</p>
+    <button class="outline" onclick="openLetter(3)">Mektubu aç</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="subtitle">BİR SORUM VAR</div>
+  <h2>Şimdi sana sarılabilir miyim?</h2>
+  <div class="heart">🫂</div>
+  <p>Aramızda kilometreler olsa da<br>bu sarılma sana benden gelsin.</p>
+  <button onclick="hug()">Ali'ye sarıl ❤️</button>
+  <p id="hugMessage"></p>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="subtitle">KÜÇÜK BİR OYUN</div>
+  <h2>Seni neden seviyorum?</h2>
+  <div class="card">
+   <div id="reason">Bir düğmeye bas ve öğren...</div>
+   <button onclick="newReason()">Bir neden daha ❤️</button>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="subtitle">HENÜZ YAŞAMADIKLARIMIZ</div>
+  <h2>Birlikte yaşayacağımız günler...</h2>
+  <div class="card">
+   <p>♡ Birlikte uyanacağımız sabahlar.</p>
+   <p>♡ Elini tutarak yürüyeceğimiz sokaklar.</p>
+   <p>♡ Birlikte izleyeceğimiz gün batımları.</p>
+   <p>♡ Aynı yerde, aynı gökyüzünün altında olacağımız geceler.</p>
+   <p>♡ Henüz yaşamadığımız binlerce güzel anı.</p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="heart">💗</div>
+  <h2>Son bir şey Esra...</h2>
+  <div class="card">
+   <p class="serif" style="font-size:25px">
+    Bu siteyi bitirdiğinde belki aramızdaki kilometreler
+    hâlâ orada olacak.
+   </p>
+   <p>Fakat bilmeni istiyorum ki ben bu küçük dünyayı
+   sana bir şeyi hatırlatmak için yaptım:</p>
+   <h2>İyi ki hayatımdasın.</h2>
+   <p>İyi ki seni tanımışım.</p>
+   <p>Ve iyi ki benim Esra'msın.</p>
+   <p style="font-size:23px">Seni seviyorum. ❤️</p>
+   <p>— Ali</p>
+  </div>
+ </div>
+</section>
+
+<footer>
+ <div class="heart">♡</div>
+ <p>Bu küçük evren Esra için hazırlandı.</p>
+ <p class="small">Ali'nin kalbinden, Esra'ya...</p>
+</footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeLetter()">
+ <div class="modal-content">
+  <div style="font-size:35px">💌</div>
+  <h2 id="letterTitle"></h2>
+  <p id="letterText"></p>
+  <p style="color:#ffcce5">Seni seven, Ali ❤️</p>
+  <button onclick="closeLetter()">Seni seviyorum</button>
+ </div>
+</div>
+
+<script>
+const letters=[
+ {
+ title:"Beni Özlediğinde...",
+ text:"Keşke şu an yanında olabilseydim Esra. Sana sımsıkı sarılıp bütün özlemimi anlatabilseydim. Uzakta olmam seni daha az sevdiğim anlamına gelmiyor. Her geçen gün sana kavuşacağım anı daha çok hayal ediyorum. ❤️"
+ },
+ {
+ title:"Üzgün Olduğunda...",
+ text:"Keşke şu an yanında olup seni dinleyebilsem. Her şeyi tek başına taşımak zorunda değilsin. Konuşmak istediğinde ben buradayım. Umarım bu küçük mesaj yüzünde bir gülümseme oluşturur. Sen benim için çok değerlisin. 💗"
+ },
+ {
+ title:"Sevilmediğini Düşündüğünde...",
+ text:"Esra, bazen kelimeler sevgiyi anlatmaya yetmeyebilir. Ama sana şunu söylemek istiyorum: Sen benim için sıradan biri değilsin. Varlığın, hayatımda çok özel bir yere sahip. Bunu hiçbir zaman unutma. ❤️"
+ },
+ {
+ title:"İyi Geceler Sevgilim...",
+ text:"Gözlerini kapatmadan önce bugün de birinin seni düşündüğünü bil. Umarım güzel rüyalar görürsün. Keşke sana iyi geceler deyip alnından öpebilseydim. Şimdilik kocaman bir öpücük gönderiyorum. İyi geceler Esra. 🌙"
+ }
+];
+
+function openLetter(i){
+ document.getElementById("letterTitle").innerText=letters[i].title;
+ document.getElementById("letterText").innerText=letters[i].text;
+ document.getElementById("modal").style.display="flex";
+}
+function closeLetter(){
+ document.getElementById("modal").style.display="none";
+}
+function hug(){
+ document.getElementById("hugMessage").innerHTML=
+ "Sana kilometrelerce uzaktan sımsıkı sarıldım Esra! 🫂❤️<br>Keşke gerçekten yanında olabilseydim.";
+}
+const reasons=[
+ "Çünkü sen olduğun gibi çok özelsin. ❤️",
+ "Çünkü varlığın bile günümü güzelleştirebiliyor.",
+ "Çünkü seninle konuşmak bana iyi geliyor.",
+ "Çünkü hayatımda olman benim için çok değerli.",
+ "Çünkü gülümsemeni görmek istiyorum.",
+ "Çünkü seninle hayaller kurmayı seviyorum.",
+ "Çünkü seni tanıdığım için çok mutluyum.",
+ "Çünkü sen, sen olduğun için seviliyorsun."
+];
+function newReason(){
+ const r=reasons[Math.floor(Math.random()*reasons.length)];
+ document.getElementById("reason").innerText=r;
+}
+</script>
+</body>
+</html>
