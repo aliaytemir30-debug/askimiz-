@@ -406,278 +406,530 @@ setInterval(updateLoveCounter, 1000);
 
 </script>
 </body>
-<!-- MOBİL UYUMLU PEMBE ANİME OYUNU BAŞLANGIÇ -->
+ <!-- GÖRSELLE BİREBİR AYNI ZORLAYICI OYUN BAŞLANGIÇ -->
 <style>
-    #mobile-love-game {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px 10px;
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    #exact-pink-game {
+        position: relative;
+        width: 100%;
+        max-width: 650px;
         margin: 20px auto;
-        width: 100%;
-        max-width: 450px;
-        background: #fce7f3; /* Açık pembe arka plan */
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border: 6px solid #222;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(219, 39, 119, 0.35);
+        background: #ffd6e7;
         user-select: none;
-        box-sizing: border-box;
-    }
-
-    #mobile-love-game h2 {
-        color: #db2777;
-        font-size: 20px;
-        margin: 0 0 8px 0;
-        text-align: center;
-    }
-
-    #game-info {
-        font-size: 16px;
-        font-weight: bold;
-        color: #be185d;
-        margin-bottom: 10px;
-    }
-
-    #gameCanvas {
-        background: #fdf2f8;
-        border: 3px solid #ec4899;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 380px;
-        height: 250px;
         touch-action: none;
+        font-family: 'Press Start 2P', 'Courier New', monospace;
     }
 
-    /* Telefonda dokunarak kontrol edilecek butonlar */
-    .game-controls {
-        display: flex;
-        justify-content: space-between;
+    #exactCanvas {
+        display: block;
         width: 100%;
-        max-width: 380px;
-        margin-top: 12px;
-        gap: 10px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        image-rendering: pixelated;
     }
 
-    .ctrl-btn {
-        flex: 1;
-        background-color: #f472b6;
-        color: white;
-        border: none;
-        padding: 14px 0;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(244, 114, 182, 0.4);
+    /* Görseldeki Sol Alt Yuvarlak Piksel Yön Tuşları (D-Pad) */
+    .dpad-container {
+        position: absolute;
+        bottom: 14px;
+        left: 16px;
+        width: 105px;
+        height: 105px;
+        background: rgba(235, 200, 215, 0.85);
+        border: 4px solid #1a1a1a;
+        border-radius: 50%;
+        box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dpad-center {
+        width: 24px;
+        height: 24px;
+        border: 3px solid #1a1a1a;
+        border-radius: 50%;
+        background: #f3d1df;
+    }
+
+    .dpad-btn {
+        position: absolute;
+        background: #e5b8cb;
+        border: 3px solid #1a1a1a;
+        color: #1a1a1a;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
-        outline: none;
-        transition: transform 0.1s, background-color 0.1s;
     }
 
-    .ctrl-btn:active {
-        transform: scale(0.95);
-        background-color: #db2777;
+    .dpad-btn:active { background: #f472b6; }
+    .btn-left  { left: 6px;  width: 28px; height: 24px; border-radius: 6px 0 0 6px; }
+    .btn-right { right: 6px; width: 28px; height: 24px; border-radius: 0 6px 6px 0; }
+    .btn-up    { top: 6px;   width: 24px; height: 28px; border-radius: 6px 6px 0 0; }
+    .btn-down  { bottom: 6px;width: 24px; height: 28px; border-radius: 0 0 6px 6px; }
+
+    /* Görseldeki Sağ Alt Yuvarlak Piksel Zıplama Tuşu */
+    .jump-btn-container {
+        position: absolute;
+        bottom: 16px;
+        right: 18px;
+        width: 82px;
+        height: 82px;
+        background: rgba(235, 200, 215, 0.88);
+        border: 4px solid #1a1a1a;
+        border-radius: 50%;
+        box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .jump-btn-container:active {
+        transform: scale(0.94);
+        background: #f472b6;
+    }
+
+    .jump-arrow {
+        width: 0; 
+        height: 0; 
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-bottom: 18px solid #b88a9e;
+        position: relative;
+    }
+    .jump-arrow::after {
+        content: '';
+        position: absolute;
+        left: -6px;
+        top: 18px;
+        width: 12px;
+        height: 12px;
+        background: #b88a9e;
     }
 </style>
 
-<div id="mobile-love-game">
-    <h2>Kalpleri Topla</h2>
-    <div id="game-info">Skor: <span id="score">0</span></div>
-    
-    <canvas id="gameCanvas" width="380" height="250"></canvas>
+<div id="exact-pink-game">
+    <canvas id="exactCanvas" width="640" height="360"></canvas>
 
-    <!-- Telefon için dokunmatik yön ve zıplama tuşları -->
-    <div class="game-controls">
-        <button class="ctrl-btn" id="leftBtn">◀</button>
-        <button class="ctrl-btn" id="jumpBtn">⬆ Zıpla</button>
-        <button class="ctrl-btn" id="rightBtn">▶</button>
+    <!-- Sol Alt D-Pad -->
+    <div class="dpad-container">
+        <div class="dpad-center"></div>
+        <div class="dpad-btn btn-up" id="btnUp">▲</div>
+        <div class="dpad-btn btn-down" id="btnDown">▼</div>
+        <div class="dpad-btn btn-left" id="btnLeft">◀</div>
+        <div class="dpad-btn btn-right" id="btnRight">▶</div>
+    </div>
+
+    <!-- Sağ Alt Zıplama -->
+    <div class="jump-btn-container" id="btnJump">
+        <div class="jump-arrow"></div>
     </div>
 </div>
 
 <script>
-    (function() {
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-        const scoreElement = document.getElementById("score");
+(function() {
+    const canvas = document.getElementById("exactCanvas");
+    const ctx = canvas.getContext("2d");
 
-        let score = 0;
+    let score = 0;
+    let gameSpeed = 1.6; // Zorluk için kamera/dünya akış hızı
+    let frameCount = 0;
 
-        // Oyuncu (Minecraft tarzı küp pembe saçlı anime kızı)
-        let player = {
-            x: 40,
-            y: 160,
-            width: 26,
-            height: 32,
-            vx: 0,
-            vy: 0,
-            speed: 3.5,
-            jumpPower: -9.5,
-            grounded: false
-        };
+    // 3D Piksel Pembe Saçlı Anime Kızı
+    const player = {
+        x: 170,
+        y: 120,
+        w: 32,
+        h: 46,
+        vx: 0,
+        vy: 0,
+        speed: 3.8,
+        jumpPower: -10.5,
+        grounded: false,
+        facingRight: true
+    };
 
-        const gravity = 0.5;
+    const gravity = 0.52;
 
-        // Zemin ve Engeller (Platformlar)
-        const platforms = [
-            { x: 0, y: 210, width: 400, height: 40 }, // Ana zemin
-            { x: 120, y: 150, width: 80, height: 16 }, // Engel 1
-            { x: 230, y: 100, width: 90, height: 16 }  // Engel 2
+    // Minecraft tarzı çimli toprak blok platformlar (Zorlayıcı boşluklar)
+    let platforms = [];
+    // Toplanacak Kalpler (Dolu kırmızı ve içi boş piksel kalpler)
+    let hearts = [];
+
+    function initLevel() {
+        score = 0;
+        gameSpeed = 1.5;
+        player.x = 120;
+        player.y = 100;
+        player.vx = 0;
+        player.vy = 0;
+
+        platforms = [
+            // Başlangıç Sol Platformu (4 blok)
+            { x: 0,   y: 220, w: 48, h: 48, moving: false },
+            { x: 48,  y: 220, w: 48, h: 48, moving: false },
+            { x: 96,  y: 220, w: 48, h: 48, moving: false },
+            { x: 144, y: 220, w: 48, h: 48, moving: false },
+            // Basamak Blokları (Görseldeki yükselen bloklar)
+            { x: 205, y: 200, w: 44, h: 44, moving: false },
+            { x: 265, y: 172, w: 44, h: 44, moving: false },
+            { x: 345, y: 140, w: 48, h: 48, moving: true, dir: 1, range: 35, startY: 140 }, // Zorlayıcı hareketli blok
+            // Sağ Taraf Platformu
+            { x: 455, y: 220, w: 48, h: 48, moving: false },
+            { x: 503, y: 220, w: 48, h: 48, moving: false },
+            { x: 551, y: 220, w: 48, h: 48, moving: false },
+            { x: 599, y: 220, w: 48, h: 48, moving: false }
         ];
 
-        // Toplanacak Kalp (İçi boş/çizgi kalpli veya zarif görünüm)
-        let heart = {
-            x: 260,
-            y: 60,
-            size: 22
-        };
+        hearts = [
+            { x: 35,  y: 175, filled: false, collected: false },
+            { x: 85,  y: 175, filled: false, collected: false },
+            { x: 135, y: 175, filled: false, collected: false },
+            { x: 275, y: 125, filled: true,  collected: false },
+            { x: 358, y: 90,  filled: false, collected: false },
+            { x: 485, y: 175, filled: true,  collected: false }
+        ];
+    }
 
-        // Tuş durumları
-        const keys = { left: false, right: false, jump: false };
+    const keys = { left: false, right: false };
 
-        // Mobil Buton Dinleyicileri
-        document.getElementById("leftBtn").addEventListener("touchstart", (e) => { e.preventDefault(); keys.left = true; });
-        document.getElementById("leftBtn").addEventListener("touchend", () => keys.left = false);
-        document.getElementById("leftBtn").addEventListener("mousedown", () => keys.left = true);
-        document.getElementById("leftBtn").addEventListener("mouseup", () => keys.left = false);
+    function bindTouch(id, keyName) {
+        const el = document.getElementById(id);
+        el.addEventListener("touchstart", (e) => { e.preventDefault(); keys[keyName] = true; });
+        el.addEventListener("touchend",   (e) => { e.preventDefault(); keys[keyName] = false; });
+        el.addEventListener("mousedown",  () => keys[keyName] = true);
+        el.addEventListener("mouseup",    () => keys[keyName] = false);
+        el.addEventListener("mouseleave", () => keys[keyName] = false);
+    }
 
-        document.getElementById("rightBtn").addEventListener("touchstart", (e) => { e.preventDefault(); keys.right = true; });
-        document.getElementById("rightBtn").addEventListener("touchend", () => keys.right = false);
-        document.getElementById("rightBtn").addEventListener("mousedown", () => keys.right = true);
-        document.getElementById("rightBtn").addEventListener("mouseup", () => keys.right = false);
+    bindTouch("btnLeft", "left");
+    bindTouch("btnRight", "right");
 
-        document.getElementById("jumpBtn").addEventListener("touchstart", (e) => { 
-            e.preventDefault(); 
-            if (player.grounded) { player.vy = player.jumpPower; player.grounded = false; }
-        });
-        document.getElementById("jumpBtn").addEventListener("click", () => { 
-            if (player.grounded) { player.vy = player.jumpPower; player.grounded = false; }
-        });
-
-        // Klavye desteği (Bilgisayardan test etmek istersen)
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowLeft") keys.left = true;
-            if (e.key === "ArrowRight") keys.right = true;
-            if ((e.key === "ArrowUp" || e.key === " ") && player.grounded) {
-                player.vy = player.jumpPower;
-                player.grounded = false;
-            }
-        });
-        window.addEventListener("keyup", (e) => {
-            if (e.key === "ArrowLeft") keys.left = false;
-            if (e.key === "ArrowRight") keys.right = false;
-        });
-
-        function resetGame() {
-            score = 0;
-            scoreElement.innerText = score;
-            player.x = 40;
-            player.y = 160;
-            player.vx = 0;
-            player.vy = 0;
-        }
-
-        function update() {
-            // Yatay hareket
-            if (keys.left) player.vx = -player.speed;
-            else if (keys.right) player.vx = player.speed;
-            else player.vx = 0;
-
-            player.x += player.vx;
-            
-            // Ekran sınırları
-            if (player.x < 0) player.x = 0;
-            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
-
-            // Dikey yerçekimi
-            player.vy += gravity;
-            player.y += player.vy;
-
+    function doJump() {
+        if (player.grounded) {
+            player.vy = player.jumpPower;
             player.grounded = false;
+        }
+    }
 
-            // Platform çarpışma kontrolü
-            platforms.forEach(p => {
-                if (
-                    player.x < p.x + p.width &&
-                    player.x + player.width > p.x &&
-                    player.y + player.height >= p.y &&
-                    player.y + player.height - player.vy <= p.y + 8 &&
-                    player.vy >= 0
-                ) {
-                    player.y = p.y - player.height;
-                    player.vy = 0;
-                    player.grounded = true;
+    const jumpEl = document.getElementById("btnJump");
+    jumpEl.addEventListener("touchstart", (e) => { e.preventDefault(); doJump(); });
+    jumpEl.addEventListener("mousedown",  (e) => { e.preventDefault(); doJump(); });
+    document.getElementById("btnUp").addEventListener("touchstart", (e) => { e.preventDefault(); doJump(); });
+    document.getElementById("btnUp").addEventListener("mousedown", doJump);
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft")  keys.left = true;
+        if (e.key === "ArrowRight") keys.right = true;
+        if (e.key === "ArrowUp" || e.key === " ") doJump();
+    });
+    window.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowLeft")  keys.left = false;
+        if (e.key === "ArrowRight") keys.right = false;
+    });
+
+    // Piksel Kalp Çizici (Görseldeki dolu kırmızı ve içi boş siyah çerçeveli kalpler)
+    function drawPixelHeart(x, y, size, isFilled, isFaded = false) {
+        ctx.save();
+        if (isFaded) ctx.globalAlpha = 0.35;
+        const p = size / 9;
+        const map = [
+            [0,1,1,0,0,0,1,1,0],
+            [1,2,2,1,0,1,2,2,1],
+            [1,2,2,2,1,2,2,2,1],
+            [1,2,2,2,2,2,2,2,1],
+            [0,1,2,2,2,2,2,1,0],
+            [0,0,1,2,2,2,1,0,0],
+            [0,0,0,1,2,1,0,0,0],
+            [0,0,0,0,1,0,0,0,0]
+        ];
+        for (let r = 0; r < map.length; r++) {
+            for (let c = 0; c < map[r].length; c++) {
+                if (map[r][c] === 1) {
+                    ctx.fillStyle = isFaded ? "#e879a8" : "#1a1a1a";
+                    ctx.fillRect(x + c * p, y + r * p, p + 0.5, p + 0.5);
+                } else if (map[r][c] === 2 && isFilled) {
+                    ctx.fillStyle = isFaded ? "#f472b6" : "#ef233c";
+                    ctx.fillRect(x + c * p, y + r * p, p + 0.5, p + 0.5);
                 }
-            });
-
-            // En alttaki ana zeminden düşerse (boşluğa düşerse) elenip en baştan başla
-            if (player.y > canvas.height) {
-                resetGame();
-            }
-
-            // Kalp toplama kontrolü
-            const distX = (player.x + player.width/2) - (heart.x + heart.size/2);
-            const distY = (player.y + player.height/2) - (heart.y + heart.size/2);
-            const distance = Math.sqrt(distX * distX + distY * distY);
-
-            if (distance < 25) {
-                score++;
-                scoreElement.innerText = score;
-                // Kalbi rastgele yeni bir platformun üstüne at
-                const randomPlatform = platforms[Math.floor(Math.random() * platforms.length)];
-                heart.x = randomPlatform.x + Math.random() * (randomPlatform.width - 25);
-                heart.y = randomPlatform.y - 30;
             }
         }
+        ctx.restore();
+    }
 
-        // Minecraft / Küp tarzı çizimler
-        function drawPixelRect(x, y, w, h, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
+    // Minecraft Tarzı 3D Çimli Toprak Blok Çizimi
+    function drawGrassBlock(x, y, w, h) {
+        // Sağ 3D gölge derinliği
+        ctx.fillStyle = "#5c3a21";
+        ctx.fillRect(x + w - 6, y + 4, 6, h);
+        ctx.fillStyle = "#388e3c";
+        ctx.fillRect(x + w - 6, y, 6, 12);
+
+        // Ön toprak yüzeyi
+        ctx.fillStyle = "#8d5b3c";
+        ctx.fillRect(x, y + 10, w - 6, h - 10);
+
+        // Toprak içi piksel benekler
+        ctx.fillStyle = "#6d432a";
+        ctx.fillRect(x + 6, y + 18, 6, 6);
+        ctx.fillRect(x + 22, y + 26, 8, 6);
+        ctx.fillRect(x + 10, y + 34, 6, 6);
+
+        // Üst parlak yeşil çim
+        ctx.fillStyle = "#55c646";
+        ctx.fillRect(x, y, w - 6, 11);
+        // Sarkan çim dişleri
+        ctx.fillRect(x + 4, y + 11, 5, 4);
+        ctx.fillRect(x + 16, y + 11, 6, 5);
+        ctx.fillRect(x + 28, y + 11, 5, 3);
+
+        // Piksel dış çerçeve
+        ctx.strokeStyle = "#2d1d12";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
+    }
+
+    // Görseldeki En Altta Yer Alan Mor Bariyer Blokları
+    function drawPurpleHazardFloor() {
+        const blockW = 54;
+        const y = 292;
+        for (let x = 185; x < 465; x += blockW) {
+            ctx.fillStyle = "#7e3b76";
+            ctx.fillRect(x, y, blockW - 2, 68);
+            // Üst 3D açık mor yüzey
+            ctx.fillStyle = "#9d5094";
+            ctx.fillRect(x, y, blockW - 2, 12);
+            // Mor blok piksel benekleri
+            ctx.fillStyle = "#5e2858";
+            ctx.fillRect(x + 12, y + 24, 5, 5);
+            ctx.fillRect(x + 32, y + 40, 5, 5);
+            ctx.strokeStyle = "#3b1537";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, blockW - 2, 68);
+        }
+        // Sol ve sağ alt koyu mor duvar sütunları
+        ctx.fillStyle = "#75386e";
+        ctx.fillRect(0, 268, 192, 92);
+        ctx.fillRect(455, 268, 195, 92);
+    }
+
+    // Görseldeki 3D Küp Pembe Saçlı Anime Kızı Çizimi
+    function drawAnimeGirl(x, y) {
+        ctx.save();
+        if (!player.facingRight) {
+            ctx.translate(x + player.w / 2, 0);
+            ctx.scale(-1, 1);
+            ctx.translate(-(x + player.w / 2), 0);
         }
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Bacaklar & Ayakkabı
+        ctx.fillStyle = "#fcd5ce";
+        ctx.fillRect(x + 8, y + 34, 6, 8);
+        ctx.fillRect(x + 18, y + 34, 6, 8);
+        ctx.fillStyle = "#2b2d42"; // Koyu lacivert ayakkabı
+        ctx.fillRect(x + 7, y + 41, 8, 5);
+        ctx.fillRect(x + 18, y + 41, 8, 5);
 
-            // Zeminleri ve engelleri çiz (Blok tarzı pembe tonları)
-            platforms.forEach(p => {
-                drawPixelRect(p.x, p.y, p.width, p.height, "#f472b6");
-                drawPixelRect(p.x, p.y, p.width, 4, "#fb7185"); // Üst parlak çizgi
+        // Lacivert Pileli Etek
+        ctx.fillStyle = "#2b2d42";
+        ctx.fillRect(x + 6, y + 26, 20, 9);
+
+        // Pembe Tişört / Gövde
+        ctx.fillStyle = "#ff85a1";
+        ctx.fillRect(x + 7, y + 16, 18, 11);
+
+        // Kol
+        ctx.fillStyle = "#fcd5ce";
+        ctx.fillRect(x + 22, y + 18, 8, 5);
+
+        // Küp Kafa (Ten)
+        ctx.fillStyle = "#ffe5d9";
+        ctx.fillRect(x + 5, y + 2, 22, 15);
+
+        // Göz (Piksel anime gözü)
+        ctx.fillStyle = "#3d2c2e";
+        ctx.fillRect(x + 20, y + 8, 3, 5);
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(x + 20, y + 8, 1.5, 2);
+
+        // 3D Küp Pembe Saçlar
+        ctx.fillStyle = "#ff5c8a"; // Üst ve arka saç
+        ctx.fillRect(x + 3, y - 1, 25, 6);
+        ctx.fillRect(x + 2, y + 3, 9, 16); // Arka uzun saç
+        ctx.fillStyle = "#ff8fab"; // Ön kakül parlaklığı
+        ctx.fillRect(x + 11, y + 3, 15, 4);
+        ctx.fillRect(x + 14, y + 4, 4, 8); // Yan saç tutamı
+
+        // Dış piksel kontur
+        ctx.strokeStyle = "#2b1920";
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(x + 5, y + 1, 22, 16);
+
+        ctx.restore();
+    }
+
+    // Arka Plan Pembe Gökyüzü, Kıvrımlı Piksel Bulutlar ve Üst Arayüz
+    function drawBackgroundAndUI() {
+        // Açık Pembe Gökyüzü Gradyanı
+        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, "#ffd6e7");
+        grad.addColorStop(1, "#ffeef5");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Piksel Kıvrımlı Beyaz Bulutlar
+        ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+        ctx.fillRect(55, 65, 95, 24);
+        ctx.fillRect(75, 48, 55, 20);
+        ctx.fillRect(435, 55, 115, 26);
+        ctx.fillRect(465, 38, 60, 20);
+
+        // Arka plandaki soluk pembe dekoratif kalp
+        drawPixelHeart(26, 62, 22, false, true);
+        drawPixelHeart(182, 34, 22, true, true);
+
+        // Sol Üst "Puan: X" Yazısı
+        ctx.fillStyle = "#1a1a1a";
+        ctx.font = "14px 'Press Start 2P', monospace";
+        ctx.fillText("Puan: " + score, 16, 30);
+
+        // Üst Orta Beyaz Tabelada "Kalpleri Topla" ve Kalp
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.fillRect(195, 6, 250, 34);
+        ctx.strokeStyle = "#d8b4c8";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(195, 6, 250, 34);
+
+        ctx.fillStyle = "#1a1a1a";
+        ctx.font = "12px 'Press Start 2P', monospace";
+        ctx.fillText("Kalpleri Topla", 212, 28);
+        drawPixelHeart(396, 13, 22, true, false);
+
+        // Sağ Üst Köşedeki Kalp Kutusu
+        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+        ctx.fillRect(584, 6, 44, 38);
+        ctx.strokeStyle = "#d8b4c8";
+        ctx.strokeRect(584, 6, 44, 38);
+        drawPixelHeart(594, 14, 24, true, false);
+    }
+
+    function update() {
+        frameCount++;
+
+        if (keys.left) {
+            player.vx = -player.speed;
+            player.facingRight = false;
+        } else if (keys.right) {
+            player.vx = player.speed;
+            player.facingRight = true;
+        } else {
+            player.vx = 0;
+        }
+
+        player.x += player.vx;
+
+        // Hareketli zorlayıcı platform güncellemesi
+        platforms.forEach(p => {
+            if (p.moving) {
+                p.y += p.dir * 1.1;
+                if (Math.abs(p.y - p.startY) > p.range) p.dir *= -1;
+            }
+        });
+
+        // Ekran sınırları
+        if (player.x < 0) player.x = 0;
+        if (player.x > canvas.width - player.w) player.x = canvas.width - player.w;
+
+        player.vy += gravity;
+        player.y += player.vy;
+        player.grounded = false;
+
+        // Platform çarpışma kontrolü
+        platforms.forEach(p => {
+            if (
+                player.x + 6 < p.x + p.w &&
+                player.x + player.w - 6 > p.x &&
+                player.y + player.h >= p.y &&
+                player.y + player.h - player.vy <= p.y + 12 &&
+                player.vy >= 0
+            ) {
+                player.y = p.y - player.h;
+                player.vy = 0;
+                player.grounded = true;
+            }
+        });
+
+        // En alttaki mor bariyerlere düşerse elenir ve sıfırlanır
+        if (player.y + player.h >= 292) {
+            initLevel();
+        }
+
+        // Kalp toplama ve yeni zorlu kalpler üretme
+        let remaining = 0;
+        hearts.forEach(h => {
+            if (!h.collected) {
+                remaining++;
+                const dx = (player.x + player.w / 2) - (h.x + 12);
+                const dy = (player.y + player.h / 2) - (h.y + 12);
+                if (Math.sqrt(dx * dx + dy * dy) < 28) {
+                    h.collected = true;
+                    score += 1;
+                }
+            }
+        });
+
+        // Tüm kalpler toplanınca daha zorlayıcı yeni kalpler ve hareketli bloklar doğar
+        if (remaining === 0) {
+            hearts.forEach(h => {
+                h.collected = false;
+                h.filled = Math.random() > 0.4;
+                h.y = 85 + Math.random() * 90;
             });
-
-            // İçi boş / zarif kalp çizimi
-            ctx.strokeStyle = "#db2777";
-            ctx.lineWidth = 3;
-            ctx.font = "22px Arial";
-            ctx.strokeText("❤️", heart.x, heart.y + 18);
-
-            // Küp Küp Minecraft Tarzı Pembe Saçlı Anime Kızı Çizimi
-            let px = player.x;
-            let py = player.y;
-
-            // Bacaklar
-            drawPixelRect(px + 4, py + 24, 6, 8, "#db2777");
-            drawPixelRect(px + 16, py + 24, 6, 8, "#db2777");
-
-            // Gövde (Kıyafet)
-            drawPixelRect(px + 5, py + 12, 16, 13, "#f472b6");
-
-            // Kafa (Ten rengi)
-            drawPixelRect(px + 4, py + 3, 18, 10, "#fed7aa");
-
-            // Pembe Küp Saçlar
-            drawPixelRect(px + 2, py + 1, 22, 5, "#ec4899"); // Üst saç
-            drawPixelRect(px + 2, py + 3, 5, 12, "#ec4899");  // Sol saç lülesi
-            drawPixelRect(px + 19, py + 3, 5, 12, "#ec4899"); // Sağ saç lülesi
+            // Zorluğu artır
+            platforms[4].moving = true;
+            platforms[4].dir = 1;
+            platforms[4].range = 30;
+            platforms[4].startY = 200;
         }
+    }
 
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
+    function draw() {
+        drawBackgroundAndUI();
+        drawPurpleHazardFloor();
 
-        gameLoop();
-    })();
+        // Çimli toprak blokları çiz
+        platforms.forEach(p => drawGrassBlock(p.x, p.y, p.w, p.h));
+
+        // Kalpleri çiz
+        hearts.forEach(h => {
+            if (!h.collected) {
+                // Hafif süzülme animasyonu
+                const bob = Math.sin(frameCount * 0.08 + h.x) * 3;
+                drawPixelHeart(h.x, h.y + bob, 24, h.filled, false);
+            }
+        });
+
+        // Karakteri çiz
+        drawAnimeGirl(player.x, player.y);
+    }
+
+    function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    initLevel();
+    loop();
+})();
 </script>
-<!-- MOBİL UYUMLU PEMBE ANİME OYUNU BİTİŞ -->
+<!-- GÖRSELLE BİREBİR AYNI ZORLAYICI OYUN BİTİŞ -->
 </html>
