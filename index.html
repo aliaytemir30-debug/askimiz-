@@ -406,6 +406,177 @@ setInterval(updateLoveCounter, 1000);
 
 </script>
 </body>
+ <!-- ÖZEL AYICIKLI VE AYLI MEKTUP PENCERESİ BAŞLANGIÇ -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap');
+
+    #custom-letter-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(35, 9, 33, 0.75);
+        backdrop-filter: blur(6px);
+        z-index: 999999;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #custom-letter-box {
+        background: linear-gradient(135deg, #fff0f6 0%, #ffe3ec 100%);
+        border: 4px solid #f06595;
+        border-radius: 24px;
+        max-width: 440px;
+        width: 100%;
+        padding: 30px 25px;
+        text-align: center;
+        box-shadow: 0 15px 45px rgba(236, 72, 153, 0.45);
+        font-family: 'Quicksand', sans-serif;
+        position: relative;
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+    }
+
+    @keyframes popIn {
+        from { transform: scale(0.7); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    #letter-title {
+        color: #be185d;
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 18px;
+        letter-spacing: 0.5px;
+    }
+
+    #letter-content {
+        color: #831843;
+        font-size: 17px;
+        font-weight: 700; /* Bir önceki aşamaya göre daha kalın ve belirgin */
+        line-height: 1.7;
+        white-space: pre-line;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* Mektup açıldığında arka planda belirecek sevimli ayıcık ve aylar */
+    .bg-decorations {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.15;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 28px;
+    }
+
+    #letter-title, #letter-content, #close-letter-btn {
+        position: relative;
+        z-index: 2;
+    }
+
+    #close-letter-btn {
+        background: #ec4899;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+        transition: transform 0.1s;
+    }
+
+    #close-letter-btn:active {
+        transform: scale(0.95);
+        background: #db2777;
+    }
+</style>
+
+<div id="custom-letter-overlay">
+    <div id="custom-letter-box">
+        <div class="bg-decorations">
+            <span>🧸</span><span>🌙</span><span>🧸</span><span>🌙</span>
+            <span>🌙</span><span>🧸</span><span>🌙</span><span>🧸</span>
+            <span>🧸</span><span>🌙</span><span>🧸</span><span>🌙</span>
+        </div>
+        <h3 id="letter-title">Başlık</h3>
+        <p id="letter-content">Mesaj...</p>
+        <button id="close-letter-btn">Kapat 💜</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    // İstediğin özel mesaj, sonuna ayıcık ve ay eklenmiş haliyle:
+    const tamMesaj = "İyi Geceler Tatlışşşşş Rüyalarrrr Kendine Cici Bak Üstünü Sıkıca Ört Seniiiiiii Bu Hayata Herşeyden Daha Çokkkkkkğğ Seviyorummmmm Rüyanda Bizi Gör 🧸🌙";
+
+    const benimMesajlarim = {
+        ozlediginde: {
+            baslik: "Beni Özlediğinde Aç 💌",
+            mesaj: tamMesaj
+        },
+        uzgun: {
+            baslik: "Üzgün Olduğunda Aç 🌙",
+            mesaj: tamMesaj
+        },
+        sevilmedigini: {
+            baslik: "Sevilmediğini Düşündüğünde Aç ❤️",
+            mesaj: tamMesaj
+        },
+        uyumadan: {
+            baslik: "Uyumadan Önce Aç ✨",
+            mesaj: tamMesaj
+        }
+    };
+
+    const overlay = document.getElementById("custom-letter-overlay");
+    const titleEl = document.getElementById("letter-title");
+    const contentEl = document.getElementById("letter-content");
+    const closeBtn = document.getElementById("close-letter-btn");
+
+    const allButtons = Array.from(document.querySelectorAll("button, a")).filter(el => 
+        el.textContent.trim().toLowerCase().includes("mektubu aç")
+    );
+
+    const keys = ["ozlediginde", "uzgun", "sevilmedigini", "uyumadan"];
+
+    allButtons.forEach((btn, index) => {
+        if (keys[index]) {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+
+            newBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const secilen = benimMesajlarim[keys[index]];
+                titleEl.innerText = secilen.baslik;
+                contentEl.innerText = secilen.mesaj;
+                overlay.style.display = "flex";
+            });
+        }
+    });
+
+    closeBtn.addEventListener("click", () => overlay.style.display = "none");
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.style.display = "none";
+    });
+})();
+</script>
+<!-- ÖZEL AYICIKLI VE AYLI MEKTUP PENCERESİ BİTİŞ -->
  <!-- TOZ PEMBE UZAY GALAKSİSİ VE YILDIZ KALP ARKA PLAN BAŞLANGIÇ -->
 <style>
     body {
