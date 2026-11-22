@@ -203,6 +203,51 @@ footer{position:relative;z-index:1;text-align:center;padding:40px;color:#d8a9c8}
  </div>
 </section>
 
+<section id="love-counter">
+ <div class="container">
+  <div class="subtitle">ALİ ❤️ ESRA</div>
+  <h2>♡ Bizim Hikâyemiz ♡</h2>
+
+  <div class="card">
+   <p>2 Eylül 2026 tarihinde başlayan hikâyemiz...</p>
+
+   <div class="grid">
+    <div class="card">
+     <h2 id="days">0</h2>
+     <p>GÜN</p>
+    </div>
+    <div class="card">
+     <h2 id="hours">0</h2>
+     <p>SAAT</p>
+    </div>
+    <div class="card">
+     <h2 id="minutes">0</h2>
+     <p>DAKİKA</p>
+    </div>
+    <div class="card">
+     <h2 id="seconds">0</h2>
+     <p>SANİYE</p>
+    </div>
+   </div>
+
+   <h2 style="font-size:27px">
+    İyi ki o gün o maça girdim...
+   </h2>
+
+   <p style="font-size:23px;color:#ffd5e9">
+    İyi ki tanıdım seni, Esra. ❤️
+   </p>
+
+   <p class="serif" style="font-size:21px">
+    O gün sadece bir maça girdiğimi sanıyordum.
+    Meğer hayatımın en güzel insanıyla tanışacakmışım.
+   </p>
+
+   <p>— Ali ❤️</p>
+  </div>
+ </div>
+</section>
+
 <section>
  <div class="container">
   <div class="subtitle">HENÜZ YAŞAMADIKLARIMIZ</div>
@@ -299,6 +344,27 @@ function newReason(){
  const r=reasons[Math.floor(Math.random()*reasons.length)];
  document.getElementById("reason").innerText=r;
 }
+function updateLoveCounter() {
+ const start = new Date(2026, 8, 2, 11, 56, 0);
+ const now = new Date();
+
+ let diff = now - start;
+ if (diff < 0) diff = 0;
+
+ const days = Math.floor(diff / 86400000);
+ const hours = Math.floor((diff % 86400000) / 3600000);
+ const minutes = Math.floor((diff % 3600000) / 60000);
+ const seconds = Math.floor((diff % 60000) / 1000);
+
+ document.getElementById("days").textContent = days;
+ document.getElementById("hours").textContent = hours;
+ document.getElementById("minutes").textContent = minutes;
+ document.getElementById("seconds").textContent = seconds;
+}
+
+updateLoveCounter();
+setInterval(updateLoveCounter, 1000);
+
 </script>
 </body>
 </html>
